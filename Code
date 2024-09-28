@@ -69,6 +69,13 @@ int main() {
 
     // Solve the Tower of Hanoi
     towerOfHanoi(n, &src, &aux, &dest, 1, 3, 2);
+    
+    printf("\nALL THE DISKS ARE NOW MOVED TO DESTINATION");
+    
+    return 0;
+}
+    // Solve the Tower of Hanoi
+    towerOfHanoi(n, &src, &aux, &dest, 1, 3, 2);
 
     return 0;
 }
