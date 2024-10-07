@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_DISKS 64  // Maximum number of disks
+#define MAX_DISKS 64  // Define the maximum number of disks
 
-// Stack structure to hold disks
+// Stack structure to hold disks 
 typedef struct {
     int top;
     int disks[MAX_DISKS];
@@ -29,7 +29,7 @@ int pop(Stack *s) {
         return s->disks[(s->top)--];
     } else {
         printf("Stack underflow\n");
-        return -1;
+        return -1;  // Returning -1 to indicate an error
     }
 }
 
@@ -41,11 +41,21 @@ void moveDisk(int from, int to, int disk) {
 // Recursive function to solve Tower of Hanoi
 void towerOfHanoi(int n, Stack *src, Stack *aux, Stack *dest, int from, int to, int auxPeg) {
     if (n == 1) {
-        moveDisk(from, to, pop(src));
+        int disk = pop(src);
+        if (disk != -1) {  // Check if pop was successful
+            moveDisk(from, to, disk);
+            push(dest, disk);  // Push the disk onto the destination stack
+        }
         return;
     }
     towerOfHanoi(n - 1, src, dest, aux, from, auxPeg, to);
-    moveDisk(from, to, pop(src));
+    
+    int disk = pop(src);
+    if (disk != -1) {  // Check if pop was successful
+        moveDisk(from, to, disk);
+        push(dest, disk);  // Push the disk onto the destination stack
+    }
+
     towerOfHanoi(n - 1, aux, src, dest, auxPeg, to, from);
 }
 
@@ -54,6 +64,11 @@ int main() {
 
     printf("Enter the number of disks: ");
     scanf("%d", &n);
+
+    if (n < 1 || n > MAX_DISKS) {
+        printf("Number of disks must be between 1 and %d.\n", MAX_DISKS);
+        return 1;  // Exit if the input is invalid
+    }
 
     Stack src, aux, dest;
 
@@ -69,8 +84,8 @@ int main() {
 
     // Solve the Tower of Hanoi
     towerOfHanoi(n, &src, &aux, &dest, 1, 3, 2);
-    
-    printf("\nALL THE DISKS ARE NOW MOVED TO DESTINATION");
-    
+
+    printf("\nALL THE DISKS ARE NOW MOVED TO DESTINATION\n");
+
     return 0;
 }
